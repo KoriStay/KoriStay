@@ -47,6 +47,7 @@ class RoleAndPermissionSeeder extends Seeder
             Permission::create(['name' => $permission, 'guard_name' => $guard]);
         }
 
+        app()[PermissionRegistrar::class]->forgetCachedPermissions();
         $owner = Role::firstOrCreate(
             [
                 'name' => 'owner', 
