@@ -23,6 +23,7 @@ beforeEach(function () {
         'guest_email' => 'tamu@example.com',
         'check_in' => '2026-12-01',
         'check_out' => '2026-12-03',
+        'guests' => 2,
     ]);
     $this->booking->total_price = 200000;
     $this->booking->save();

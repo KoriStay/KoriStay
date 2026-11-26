@@ -19,6 +19,7 @@ function createBooking(Unit $unit): Booking
         'guest_email' => 'tamu@example.com',
         'check_in' => '2026-12-01',
         'check_out' => '2026-12-03',
+        'guests' => 2,
     ]);
     $booking->total_price = 200000;
     $booking->save();
