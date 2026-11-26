@@ -9,21 +9,28 @@ use App\Models\Scopes\TenantScope;
 use App\Models\Tenant;
 use App\Models\Unit;
 use App\Support\TenantContext;
+use Carbon\CarbonImmutable;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Contracts\Console\Kernel;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 uses(RefreshDatabase::class);
 
+/**
+ * Each call books the next free week, so bookings never overlap.
+ */
 function bookingForExpiry(Unit $unit, ?BookingStatus $status = null): Booking
 {
+    static $week = 0;
+    $checkIn = CarbonImmutable::parse('2027-01-04')->addWeeks($week++);
+
     $booking = new Booking([
         'unit_id' => $unit->id,
         'booking_code' => fake()->unique()->bothify('KS-######'),
         'guest_name' => 'Tamu',
         'guest_email' => 'tamu@example.com',
-        'check_in' => '2026-12-01',
-        'check_out' => '2026-12-03',
+        'check_in' => $checkIn->toDateString(),
+        'check_out' => $checkIn->addDays(2)->toDateString(),
         'guests' => 2,
     ]);
     $booking->total_price = 200000;
