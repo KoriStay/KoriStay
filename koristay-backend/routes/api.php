@@ -5,6 +5,8 @@ use App\Actions\Auth\LoginUser;
 use App\Actions\Auth\LogoutUser;
 use App\Actions\Booking\CreateBooking;
 use App\Actions\Booking\CreateErpBooking;
+use App\Actions\Booking\ListBookings;
+use App\Actions\Booking\LookUpBooking;
 use App\Actions\Unit\ListPublishedUnits;
 use App\Actions\Unit\ListUnits;
 use Illuminate\Support\Facades\Route;
@@ -20,10 +22,12 @@ Route::prefix('auth')->group(function () {
 
 Route::prefix('erp')->middleware(['auth:sanctum', 'tenant.required', 'tenant.member'])->group(function () {
     Route::get('/units', ListUnits::class)->middleware('permission:units.view');
+    Route::get('/bookings', ListBookings::class)->middleware('permission:bookings.view');
     Route::post('/bookings', CreateErpBooking::class)->middleware('permission:bookings.create');
 });
 
 Route::prefix('public')->middleware(['tenant.required'])->group(function () {
     Route::get('/units', ListPublishedUnits::class);
     Route::post('/bookings', CreateBooking::class);
+    Route::post('/bookings/lookup', LookUpBooking::class)->middleware('throttle:booking-lookup');
 });
