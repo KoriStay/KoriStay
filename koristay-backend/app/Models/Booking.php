@@ -13,6 +13,11 @@ class Booking extends Model
 {
     use BelongsToTenant;
 
+    /**
+     * How long a pending booking holds its unit before it is cancelled.
+     */
+    public const PENDING_HOLD_MINUTES = 60;
+
     protected $fillable = [
         'unit_id',
         'booking_code',
@@ -31,7 +36,19 @@ class Booking extends Model
             'check_out' => 'date',
             'status' => BookingStatus::class,
             'source' => BookingSource::class,
+            'expires_at' => 'datetime',
         ];
+    }
+
+    protected static function booted(): void
+    {
+        static::creating(function (Booking $booking) {
+            $isPending = ($booking->status ?? BookingStatus::PENDING) === BookingStatus::PENDING;
+
+            if ($isPending && $booking->expires_at === null) {
+                $booking->expires_at = now()->addMinutes(self::PENDING_HOLD_MINUTES);
+            }
+        });
     }
 
     public function unit(): BelongsTo
