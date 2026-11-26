@@ -26,7 +26,6 @@ function bookingForExpiry(Unit $unit, ?BookingStatus $status = null): Booking
 
     $booking = new Booking([
         'unit_id' => $unit->id,
-        'booking_code' => fake()->unique()->bothify('KS-######'),
         'guest_name' => 'Tamu',
         'guest_email' => 'tamu@example.com',
         'check_in' => $checkIn->toDateString(),

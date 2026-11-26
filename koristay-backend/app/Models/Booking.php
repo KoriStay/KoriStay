@@ -20,16 +20,19 @@ class Booking extends Model
      */
     public const PENDING_HOLD_MINUTES = 60;
 
+    /**
+     * Characters of booking_code, without the look-alikes 0, O, 1 and I.
+     */
+    public const CODE_ALPHABET = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+
     protected $fillable = [
         'unit_id',
-        'booking_code',
         'guest_name',
         'guest_email',
         'guest_phone',
         'guests',
         'check_in',
         'check_out',
-        'source',
     ];
 
     protected function casts(): array
@@ -53,6 +56,10 @@ class Booking extends Model
                 $booking->expires_at = now()->addMinutes(self::PENDING_HOLD_MINUTES);
             }
 
+            if (blank($booking->booking_code)) {
+                $booking->booking_code = self::generateCode();
+            }
+
             $booking->ensureGuestsFitUnit();
         });
 
@@ -61,6 +68,22 @@ class Booking extends Model
                 $booking->ensureGuestsFitUnit();
             }
         });
+    }
+
+    /**
+     * A random KS-XXXXXX code, unique across all tenants because guests look bookings up by it.
+     */
+    public static function generateCode(): string
+    {
+        do {
+            $code = 'KS-';
+
+            for ($i = 0; $i < 6; $i++) {
+                $code .= self::CODE_ALPHABET[random_int(0, strlen(self::CODE_ALPHABET) - 1)];
+            }
+        } while (static::withoutGlobalScope(TenantScope::class)->where('booking_code', $code)->exists());
+
+        return $code;
     }
 
     /**

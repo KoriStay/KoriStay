@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 dataset('server controlled attributes', [
     'booking total_price' => [Booking::class, 'total_price', 1],
     'booking status' => [Booking::class, 'status', 'confirmed'],
+    'booking booking_code' => [Booking::class, 'booking_code', 'KS-AAAAAA'],
+    'booking source' => [Booking::class, 'source', 'marketplace'],
     'payment amount' => [Payment::class, 'amount', 1],
     'payment status' => [Payment::class, 'status', 'paid'],
 ]);

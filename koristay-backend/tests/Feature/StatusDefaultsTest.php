@@ -18,7 +18,6 @@ beforeEach(function () {
 
     $this->booking = new Booking([
         'unit_id' => $unit->id,
-        'booking_code' => 'KS-0001',
         'guest_name' => 'Tamu',
         'guest_email' => 'tamu@example.com',
         'check_in' => '2026-12-01',
