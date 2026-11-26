@@ -18,6 +18,10 @@ class Payment extends Model
         'raw_payload',
     ];
 
+    protected $hidden = [
+        'raw_payload',
+    ];
+
     protected function casts(): array
     {
         return [
