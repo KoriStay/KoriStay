@@ -7,7 +7,7 @@ use App\Models\Unit;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('auth')->group(function () {
-    Route::post('/login', LoginUser::class)->name('login');
+    Route::post('/login', LoginUser::class)->middleware('throttle:login')->name('login');
 
     Route::middleware('auth:sanctum')->group(function () {
         Route::get('/me', GetCurrentUser::class)->name('user');
