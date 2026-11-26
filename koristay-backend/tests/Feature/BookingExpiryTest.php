@@ -2,7 +2,9 @@
 
 use App\Actions\Booking\CancelExpiredPendingBookings;
 use App\Enums\BookingStatus;
+use App\Enums\PaymentStatus;
 use App\Models\Booking;
+use App\Models\Payment;
 use App\Models\Scopes\TenantScope;
 use App\Models\Tenant;
 use App\Models\Unit;
@@ -32,6 +34,20 @@ function bookingForExpiry(Unit $unit, ?BookingStatus $status = null): Booking
     $booking->save();
 
     return $booking;
+}
+
+function unpaidPaymentFor(Booking $booking): Payment
+{
+    $payment = new Payment(['booking_id' => $booking->id, 'gateway' => 'test']);
+    $payment->amount = 200000;
+    $payment->save();
+
+    return $payment;
+}
+
+function paymentStatusOf(Payment $payment): PaymentStatus
+{
+    return Payment::withoutGlobalScope(TenantScope::class)->findOrFail($payment->id)->status;
 }
 
 function statusOf(Booking $booking): BookingStatus
@@ -80,6 +96,26 @@ it('cancels expired pending bookings of every tenant and leaves the rest', funct
         ->and(statusOf($expiredB))->toBe(BookingStatus::CANCELLED)
         ->and(statusOf($freshA))->toBe(BookingStatus::PENDING)
         ->and(statusOf($confirmedA))->toBe(BookingStatus::CONFIRMED);
+});
+
+it('expires the unpaid payments of bookings it cancels and leaves payments of held bookings', function () {
+    $expired = bookingForExpiry($this->unitA);
+    $expiredPayment = unpaidPaymentFor($expired);
+    app(TenantContext::class)->setTenant($this->tenantB);
+    $expiredB = bookingForExpiry($this->unitB);
+    $expiredPaymentB = unpaidPaymentFor($expiredB);
+
+    $this->travel(61)->minutes();
+    app(TenantContext::class)->setTenant($this->tenantA);
+    $held = bookingForExpiry($this->unitA);
+    $heldPayment = unpaidPaymentFor($held);
+    app()->forgetInstance(TenantContext::class);
+
+    CancelExpiredPendingBookings::run();
+
+    expect(paymentStatusOf($expiredPayment))->toBe(PaymentStatus::EXPIRED)
+        ->and(paymentStatusOf($expiredPaymentB))->toBe(PaymentStatus::EXPIRED)
+        ->and(paymentStatusOf($heldPayment))->toBe(PaymentStatus::UNPAID);
 });
 
 it('keeps a pending booking until its hold has fully passed', function () {
