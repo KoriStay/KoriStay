@@ -2,12 +2,12 @@
 
 namespace App\Models;
 
-use App\Enums\BookingStatus;
 use App\Enums\BookingSource;
-use Illuminate\Database\Eloquent\Model;
+use App\Enums\BookingStatus;
 use App\Models\Concern\BelongsToTenant;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Booking extends Model
 {
@@ -21,18 +21,16 @@ class Booking extends Model
         'guest_phone',
         'check_in',
         'check_out',
-        'total_price',
-        'status',
         'source',
     ];
 
-    protected function casts (): array
+    protected function casts(): array
     {
         return [
-            'check_in'  => 'date',
+            'check_in' => 'date',
             'check_out' => 'date',
-            'status'    => BookingStatus::class,
-            'source'    => BookingSource::class,
+            'status' => BookingStatus::class,
+            'source' => BookingSource::class,
         ];
     }
 

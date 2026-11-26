@@ -3,8 +3,8 @@
 namespace App\Models;
 
 use App\Enums\PaymentStatus;
-use Illuminate\Database\Eloquent\Model;
 use App\Models\Concern\BelongsToTenant;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Payment extends Model
@@ -15,17 +15,15 @@ class Payment extends Model
         'booking_id',
         'gateway',
         'external_id',
-        'amount',
-        'status',
         'raw_payload',
     ];
 
     protected function casts(): array
     {
         return [
-            'amount'        => 'integer',
-            'status'        => PaymentStatus::class,
-            'raw_payload'   => 'array',
+            'amount' => 'integer',
+            'status' => PaymentStatus::class,
+            'raw_payload' => 'array',
         ];
     }
 
