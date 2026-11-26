@@ -58,8 +58,8 @@ it('lets every staff role with units.view list only its own tenant units', funct
 
     $this->getJson('/api/erp/units')
         ->assertOk()
-        ->assertJsonCount(1)
-        ->assertJsonPath('0.name', 'Unit A');
+        ->assertJsonCount(1, 'data')
+        ->assertJsonPath('data.0.name', 'Unit A');
 })->with(['owner', 'front_desk', 'housekeeping']);
 
 it('does not honour a role that was granted inside another tenant', function () {

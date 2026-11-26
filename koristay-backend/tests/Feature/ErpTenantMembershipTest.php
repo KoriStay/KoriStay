@@ -53,8 +53,8 @@ it('still lets a tenantless user read public routes through the tenant header', 
 
     $this->getJson('/api/public/units', ['X-Tenant' => 'villa-b'])
         ->assertOk()
-        ->assertJsonCount(1)
-        ->assertJsonPath('0.name', 'Unit B');
+        ->assertJsonCount(1, 'data')
+        ->assertJsonPath('data.0.name', 'Unit B');
 });
 
 it('keeps a staff user on their own tenant when they send another tenant header', function () {
@@ -72,6 +72,6 @@ it('keeps a staff user on their own tenant when they send another tenant header'
 
     $this->getJson('/api/erp/units', ['X-Tenant' => 'villa-b'])
         ->assertOk()
-        ->assertJsonCount(1)
-        ->assertJsonPath('0.name', 'Unit A');
+        ->assertJsonCount(1, 'data')
+        ->assertJsonPath('data.0.name', 'Unit A');
 });

@@ -86,8 +86,8 @@ it('returns only the requested tenant on the public endpoint', function () {
 
     $this->getJson('/api/public/units', ['X-Tenant' => 'villa-a'])
         ->assertOk()
-        ->assertJsonCount(1)
-        ->assertJsonPath('0.name', 'Unit A');
+        ->assertJsonCount(1, 'data')
+        ->assertJsonPath('data.0.name', 'Unit A');
 });
 
 it('rejects the erp endpoint for guests', function () {
