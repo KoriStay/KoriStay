@@ -21,6 +21,11 @@ class Booking extends Model
     public const PENDING_HOLD_MINUTES = 60;
 
     /**
+     * Time zone that decides what "today" is for check-in dates (all villas are in Bali for now).
+     */
+    public const LOCAL_TIMEZONE = 'Asia/Makassar';
+
+    /**
      * Characters of booking_code, without the look-alikes 0, O, 1 and I.
      */
     public const CODE_ALPHABET = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';

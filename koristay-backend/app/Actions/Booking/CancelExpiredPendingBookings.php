@@ -7,6 +7,7 @@ use App\Enums\PaymentStatus;
 use App\Models\Booking;
 use App\Models\Payment;
 use App\Models\Scopes\TenantScope;
+use App\Models\Unit;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 use Lorisleiva\Actions\Concerns\AsAction;
@@ -20,17 +21,18 @@ class CancelExpiredPendingBookings
     public string $commandDescription = 'Cancel pending bookings whose hold has expired';
 
     /**
-     * Cancels expired pending bookings and expires their unpaid payments.
+     * Cancels expired pending bookings and expires their unpaid payments, of one unit or of all.
      * Runs from the scheduler without a tenant, so it reads every tenant on purpose.
      *
      * @return int number of cancelled bookings
      */
-    public function handle(): int
+    public function handle(?Unit $unit = null): int
     {
-        return DB::transaction(function (): int {
+        return DB::transaction(function () use ($unit): int {
             $bookingIds = Booking::withoutGlobalScope(TenantScope::class)
                 ->where('status', BookingStatus::PENDING)
                 ->where('expires_at', '<=', now())
+                ->when($unit, fn ($query) => $query->where('unit_id', $unit->id))
                 ->lockForUpdate()
                 ->pluck('id');
 

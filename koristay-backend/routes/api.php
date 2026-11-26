@@ -3,6 +3,7 @@
 use App\Actions\Auth\GetCurrentUser;
 use App\Actions\Auth\LoginUser;
 use App\Actions\Auth\LogoutUser;
+use App\Actions\Booking\CreateBooking;
 use App\Actions\Unit\ListPublishedUnits;
 use App\Actions\Unit\ListUnits;
 use Illuminate\Support\Facades\Route;
@@ -22,4 +23,5 @@ Route::prefix('erp')->middleware(['auth:sanctum', 'tenant.required', 'tenant.mem
 
 Route::prefix('public')->middleware(['tenant.required'])->group(function () {
     Route::get('/units', ListPublishedUnits::class);
+    Route::post('/bookings', CreateBooking::class);
 });
