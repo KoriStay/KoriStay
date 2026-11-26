@@ -1,10 +1,10 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use App\Actions\Auth\LoginUser;
 use App\Actions\Auth\GetCurrentUser;
+use App\Actions\Auth\LoginUser;
 use App\Actions\Auth\LogoutUser;
 use App\Models\Unit;
+use Illuminate\Support\Facades\Route;
 
 Route::prefix('auth')->group(function () {
     Route::post('/login', LoginUser::class)->name('login');
@@ -15,10 +15,10 @@ Route::prefix('auth')->group(function () {
     });
 });
 
-Route::prefix('erp')->middleware(['auth:sanctum', 'tenant.required'])->group(function () { 
-    Route::get('/units', fn() => Unit::all());
+Route::prefix('erp')->middleware(['auth:sanctum', 'tenant.required'])->group(function () {
+    Route::get('/units', fn () => Unit::all())->middleware('permission:units.view');
 });
 
 Route::prefix('public')->middleware(['tenant.required'])->group(function () {
-    Route::get('/units', fn() => Unit::where('is_published', true)->get());
+    Route::get('/units', fn () => Unit::where('is_published', true)->get());
 });
