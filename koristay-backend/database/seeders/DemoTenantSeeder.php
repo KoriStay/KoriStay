@@ -22,14 +22,12 @@ class DemoTenantSeeder extends Seeder
             ]
         );
 
-        $ownerCanggu = User::firstOrCreate(
-            ['email' => 'owner@koricanggu.test'],
-            [
-                'tenant_id' => $canggu->id,
-                'name' => 'Made Canggu',
-                'password' => Hash::make('password'),
-            ]
-        );
+        $ownerCanggu = User::where('email', 'owner@koricanggu.test')->first() ?? User::forceCreate([
+            'email' => 'owner@koricanggu.test',
+            'tenant_id' => $canggu->id,
+            'name' => 'Made Canggu',
+            'password' => Hash::make('password'),
+        ]);
         setPermissionsTeamId($canggu->id);
         $ownerCanggu->assignRole('owner');
 
@@ -55,14 +53,12 @@ class DemoTenantSeeder extends Seeder
             ]
         );
 
-        $ownerUbud = User::firstOrCreate(
-            ['email' => 'owner@ubudjungle.test'],
-            [
-                'tenant_id' => $ubud->id,
-                'name' => 'Wayan Ubud',
-                'password' => Hash::make('password'),
-            ]
-        );
+        $ownerUbud = User::where('email', 'owner@ubudjungle.test')->first() ?? User::forceCreate([
+            'email' => 'owner@ubudjungle.test',
+            'tenant_id' => $ubud->id,
+            'name' => 'Wayan Ubud',
+            'password' => Hash::make('password'),
+        ]);
         setPermissionsTeamId($ubud->id);
         $ownerUbud->assignRole('owner');
 

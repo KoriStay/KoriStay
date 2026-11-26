@@ -2,6 +2,7 @@
 
 use App\Models\Booking;
 use App\Models\Payment;
+use App\Models\User;
 use Illuminate\Database\Eloquent\MassAssignmentException;
 use Illuminate\Database\Eloquent\Model;
 
@@ -12,6 +13,7 @@ dataset('server controlled attributes', [
     'booking source' => [Booking::class, 'source', 'marketplace'],
     'payment amount' => [Payment::class, 'amount', 1],
     'payment status' => [Payment::class, 'status', 'paid'],
+    'user tenant_id' => [User::class, 'tenant_id', 1],
 ]);
 
 it('rejects server controlled attributes through mass assignment in strict mode', function (string $model, string $attribute, mixed $value) {

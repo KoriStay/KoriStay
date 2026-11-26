@@ -12,7 +12,7 @@ uses(RefreshDatabase::class);
 
 function makeStaffUser(Tenant $tenant, ?string $role = null, ?Tenant $roleTenant = null): User
 {
-    $user = User::create([
+    $user = User::forceCreate([
         'name' => 'Staff',
         'email' => fake()->unique()->safeEmail(),
         'password' => 'password123',

@@ -25,7 +25,7 @@ beforeEach(function () {
     app()->forgetInstance(TenantContext::class);
     setPermissionsTeamId(null);
 
-    $this->tenantlessUser = User::create([
+    $this->tenantlessUser = User::forceCreate([
         'name' => 'No Tenant',
         'email' => 'no-tenant@example.com',
         'password' => 'password123',
@@ -58,7 +58,7 @@ it('still lets a tenantless user read public routes through the tenant header', 
 });
 
 it('keeps a staff user on their own tenant when they send another tenant header', function () {
-    $staff = User::create([
+    $staff = User::forceCreate([
         'name' => 'Staff A',
         'email' => 'staff-a@example.com',
         'password' => 'password123',

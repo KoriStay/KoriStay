@@ -13,7 +13,7 @@ beforeEach(function () {
     $this->tenantA = Tenant::create(['name' => 'Villa A', 'slug' => 'villa-a']);
     $this->tenantB = Tenant::create(['name' => 'Villa B', 'slug' => 'villa-b']);
 
-    $this->user = User::create([
+    $this->user = User::forceCreate([
         'name' => 'Staff A',
         'email' => 'staff-a@example.com',
         'password' => 'password123',

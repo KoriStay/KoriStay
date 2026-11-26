@@ -10,7 +10,7 @@ uses(RefreshDatabase::class);
 beforeEach(function () {
     $tenant = Tenant::create(['name' => 'Villa A', 'slug' => 'villa-a']);
 
-    User::create([
+    User::forceCreate([
         'name' => 'Owner',
         'email' => 'owner@example.com',
         'password' => 'password123',

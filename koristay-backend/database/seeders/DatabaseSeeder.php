@@ -21,9 +21,9 @@ class DatabaseSeeder extends Seeder
             DemoTenantSeeder::class,
         ]);
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-        ]);
+        User::firstOrCreate(
+            ['email' => 'test@example.com'],
+            ['name' => 'Test User', 'password' => 'password'],
+        );
     }
 }

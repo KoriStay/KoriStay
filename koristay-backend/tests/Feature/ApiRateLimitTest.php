@@ -11,7 +11,7 @@ uses(RefreshDatabase::class);
 
 function staffOf(Tenant $tenant, string $email): User
 {
-    $user = User::create([
+    $user = User::forceCreate([
         'name' => 'Staff',
         'email' => $email,
         'password' => 'password123',

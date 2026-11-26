@@ -17,7 +17,7 @@ beforeEach(function () {
     app(TenantContext::class)->setTenant($this->tenant);
 
     $this->unit = Unit::create(['name' => 'Unit A', 'slug' => 'unit-a', 'base_price' => 100000]);
-    $this->staff = User::create([
+    $this->staff = User::forceCreate([
         'name' => 'Staff A',
         'email' => 'staff-a@example.com',
         'password' => 'password123',

@@ -26,7 +26,7 @@ beforeEach(function () {
     $this->seed(RoleAndPermissionSeeder::class);
 
     $this->tenant = Tenant::create(['name' => 'Villa A', 'slug' => 'villa-a']);
-    $this->staff = User::create([
+    $this->staff = User::forceCreate([
         'name' => 'Owner',
         'email' => 'owner@example.com',
         'password' => 'password123',
