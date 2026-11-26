@@ -15,7 +15,7 @@ Route::prefix('auth')->group(function () {
     });
 });
 
-Route::prefix('erp')->middleware(['auth:sanctum', 'tenant.required'])->group(function () {
+Route::prefix('erp')->middleware(['auth:sanctum', 'tenant.required', 'tenant.member'])->group(function () {
     Route::get('/units', fn () => Unit::all())->middleware('permission:units.view');
 });
 
