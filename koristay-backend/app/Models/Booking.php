@@ -6,6 +6,8 @@ use App\Enums\BookingSource;
 use App\Enums\BookingStatus;
 use App\Models\Concern\BelongsToTenant;
 use App\Models\Scopes\TenantScope;
+use Database\Factories\BookingFactory;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -13,7 +15,8 @@ use Illuminate\Validation\ValidationException;
 
 class Booking extends Model
 {
-    use BelongsToTenant;
+    /** @use HasFactory<BookingFactory> */
+    use BelongsToTenant, HasFactory;
 
     /**
      * How long a pending booking holds its unit before it is cancelled.

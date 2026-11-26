@@ -2,13 +2,16 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use App\Models\Concern\BelongsToTenant;
+use Database\Factories\UnitFactory;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Unit extends Model
 {
-    use BelongsToTenant;
+    /** @use HasFactory<UnitFactory> */
+    use BelongsToTenant, HasFactory;
 
     protected $fillable = [
         'name',
@@ -23,10 +26,10 @@ class Unit extends Model
     protected function casts(): array
     {
         return [
-            'base_price'    => 'integer',
-            'max_guests'    => 'integer',
-            'amenities'     => 'array',
-            'is_published'  => 'boolean',
+            'base_price' => 'integer',
+            'max_guests' => 'integer',
+            'amenities' => 'array',
+            'is_published' => 'boolean',
         ];
     }
 
