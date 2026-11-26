@@ -17,6 +17,7 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->api(append: [ResolveTenant::class]);
+        $middleware->throttleApi();
 
         $middleware->alias([
             'tenant.required' => EnsureTenantResolved::class,
