@@ -3,8 +3,8 @@
 namespace App\Actions\Auth;
 
 use App\Models\User;
-use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Laravel\Sanctum\PersonalAccessToken;
 use Lorisleiva\Actions\Concerns\AsAction;
 
@@ -26,7 +26,7 @@ class LogoutUser
         $this->handle($request->user());
 
         return response()->json([
-            'message' => 'Logged out successfully.'
+            'message' => 'Logged out successfully.',
         ]);
     }
 }

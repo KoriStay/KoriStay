@@ -2,14 +2,14 @@
 
 namespace App\Http\Middleware;
 
+use App\Support\TenantContext;
 use Closure;
 use Illuminate\Http\Request;
-use App\Support\TenantContext;
 use Symfony\Component\HttpFoundation\Response;
 
 class EnsureTenantResolved
 {
-    public function __construct(protected TenantContext $tenantContext){}
+    public function __construct(protected TenantContext $tenantContext) {}
 
     /**
      * Handle an incoming request.
@@ -18,7 +18,7 @@ class EnsureTenantResolved
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (!$this->tenantContext->id()) {
+        if (! $this->tenantContext->id()) {
             abort(403, 'Tenant context is required for this endpoint.');
         }
 

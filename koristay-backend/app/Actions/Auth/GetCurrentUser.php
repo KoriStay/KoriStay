@@ -3,8 +3,8 @@
 namespace App\Actions\Auth;
 
 use App\Models\User;
-use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Lorisleiva\Actions\Concerns\AsAction;
 
 class GetCurrentUser

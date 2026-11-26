@@ -5,9 +5,9 @@ namespace App\Actions\Auth;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\ValidationException;
 use Lorisleiva\Actions\ActionRequest;
 use Lorisleiva\Actions\Concerns\AsAction;
-use Illuminate\Validation\ValidationException;
 
 class LoginUser
 {
@@ -25,20 +25,19 @@ class LoginUser
     /**
      * Handle the action.
      *
-     * @param  \Lorisleiva\Actions\ActionRequest  $request
-     * @return \Illuminate\Http\JsonResponse
+     * @param  ActionRequest  $request
      */
     public function handle(string $email, string $password, ?string $deviceName = null): JsonResponse
     {
         $user = User::with('tenant')->where('email', $email)->first();
 
-        if (!$user || !Hash::check($password, $user->password)) {
+        if (! $user || ! Hash::check($password, $user->password)) {
             throw ValidationException::withMessages([
                 'email' => ['The provided credentials are incorrect.'],
             ]);
         }
 
-        if($user->tenant && !$user->tenant->is_active) {
+        if ($user->tenant && ! $user->tenant->is_active) {
             throw ValidationException::withMessages([
                 'email' => ['The tenant associated with this user is not active.'],
             ]);
@@ -53,7 +52,7 @@ class LoginUser
                 'name' => $user->name,
                 'email' => $user->email,
                 'tenant' => $user->tenant,
-            ]
+            ],
         ]);
     }
 
