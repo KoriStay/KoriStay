@@ -11,3 +11,7 @@ Thumbs.db
 
 # Private notes (separate private repo)
 /.private/
+
+# Claude Code local config (not tracked)
+/.claude/
+/CLAUDE.md
