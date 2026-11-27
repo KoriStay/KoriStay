@@ -13,20 +13,6 @@ class LoginUser
 {
     use AsAction;
 
-    public function rules(): array
-    {
-        return [
-            'email' => ['required', 'email'],
-            'password' => ['required', 'string', 'min:8'],
-            'device_name' => ['nullable', 'string', 'max:100'],
-        ];
-    }
-
-    /**
-     * Handle the action.
-     *
-     * @param  ActionRequest  $request
-     */
     public function handle(string $email, string $password, ?string $deviceName = null): JsonResponse
     {
         $user = User::with('tenant')->where('email', $email)->first();
@@ -54,6 +40,18 @@ class LoginUser
                 'tenant' => $user->tenant,
             ],
         ]);
+    }
+
+    /**
+     * Get the validation rules for the action.
+     */
+    public function rules(): array
+    {
+        return [
+            'email' => ['required', 'email'],
+            'password' => ['required', 'string', 'min:8'],
+            'device_name' => ['nullable', 'string', 'max:100'],
+        ];
     }
 
     public function asController(ActionRequest $request): JsonResponse
